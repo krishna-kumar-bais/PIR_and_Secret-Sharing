@@ -1,4 +1,4 @@
-# Simple PIR Protocol
+# PIR with Additive Secret Sharing(SS)
 
 This project implements a Private Information Retrieval (PIR) protocol using additive secret sharing. The client can retrieve a value from a database distributed across multiple simulated servers without revealing which element was queried.
 
