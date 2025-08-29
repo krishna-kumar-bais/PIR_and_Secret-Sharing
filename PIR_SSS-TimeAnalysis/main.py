@@ -14,7 +14,7 @@ def generate_database(DB_SIZE,DB_FILE):
     for j in range(0,DB_SIZE):
         db.append(random.randint(0, 10_000_000))
     np.save(DB_FILE, db)
-    # print("Database saved to", DB_FILE)
+    print("\nDatabase saved to", DB_FILE)
 
 def main(argv=None):
     parser = argparse.ArgumentParser()
@@ -61,14 +61,14 @@ def main(argv=None):
     result = client_reconstruct(used_responses, used_x)
     end_query = time.time()
     Reconstruction_time = round((end_query - start_query) * 1000, 3)
-    print(f"Reconstruction time: {Reconstruction_time} ms\n")
+    print(f"Reconstruction time: {Reconstruction_time} ms")
 
     # show output
-    # print("Queried index:", args.k)
-    # print("Database value:", db[args.k])
-    # print("Reconstructed :", result,"\n")
+    print("Queried index:", args.k)
+    print("Database value:", db[args.k])
+    print("Reconstructed :", result,"\n")
         
-    return Query_creation_time,Reconstruction_time
+    return Query_creation_time, Reconstruction_time, queries
 
 # run
 if __name__ == "__main__":
