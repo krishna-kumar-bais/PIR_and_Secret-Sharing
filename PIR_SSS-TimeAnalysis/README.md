@@ -9,6 +9,7 @@ It allows evaluating the performance of PIR operations in terms of **average tim
 - Automatically generates a database (`database.npy`) of configurable size
 - Measures **Query Creation Time** and **Reconstruction Time** for PIR operations
 - Supports multiple runs to calculate **average times** and **standard deviations**
+- Computes and reports **Bandwidth sent to servers**
 - Handles multiple database sizes in a single run
 - Simple **command-line interface** for customization
 
