@@ -1,4 +1,4 @@
-# PIR-DPF: Pure 2-Server Mode
+# PIR-DPF: 2-Server
 
 Private Information Retrieval using Distributed Point Functions (2 server implementation).
 
