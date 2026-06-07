@@ -85,7 +85,7 @@ def run_pir(db_size: int, k: int,
 
 def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="(2, ell)-IT-PIR demo from CS670 Module 4 slides 21-22.")
+        description="(2, ell)-IT-PIR")
     parser.add_argument(
         "--DB_SIZE", type=int, default=16,
         help="number of database records N (default: 16)")
