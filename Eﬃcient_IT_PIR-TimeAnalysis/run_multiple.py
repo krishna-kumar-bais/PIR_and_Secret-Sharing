@@ -22,6 +22,7 @@ def run_multiple(db_sizes: List[int], k: int, record_size: int, servers: int,
             continue
 
         times_query = []
+        times_server = []
         times_recon = []
         bandwidth_kb = 0.0
         all_correct = True
@@ -35,8 +36,8 @@ def run_multiple(db_sizes: List[int], k: int, record_size: int, servers: int,
             print(f"Reconstructed value:   {result['result']}")
             print_timing_summary(timings)
 
-            # Match PIR_DPF: query creation stat = key gen + server compute
-            times_query.append(result["query_gen_time"] + result["server_time"])
+            times_query.append(result["query_gen_time"])
+            times_server.append(result["server_time"])
             times_recon.append(result["recon_time"])
             bandwidth_kb = result["bandwidth_kb"]
 
@@ -50,6 +51,12 @@ def run_multiple(db_sizes: List[int], k: int, record_size: int, servers: int,
                 "min": min(times_query),
                 "max": max(times_query),
             },
+            "server": {
+                "avg": statistics.mean(times_server),
+                "stdev": statistics.stdev(times_server) if runs > 1 else 0,
+                "min": min(times_server),
+                "max": max(times_server),
+            },
             "recon": {
                 "avg": statistics.mean(times_recon),
                 "stdev": statistics.stdev(times_recon) if runs > 1 else 0,
@@ -60,18 +67,28 @@ def run_multiple(db_sizes: List[int], k: int, record_size: int, servers: int,
             "all_correct": all_correct,
         }
 
-        print(f"\nAverage Query creation time: {statistics.mean(times_query):.3f} ms")
-        print(f"Average Reconstruction time: {statistics.mean(times_recon):.3f} ms")
+        avg_query = statistics.mean(times_query)
+        avg_server = statistics.mean(times_server)
+        avg_recon = statistics.mean(times_recon)
+        avg_total = avg_query + avg_server + avg_recon
+
+        print(f"\nAverage Query creation time:   {avg_query:.3f} ms")
+        print(f"Average Server computation time: {avg_server:.3f} ms")
+        print(f"Average Reconstruction time:     {avg_recon:.3f} ms")
+        print(f"Average Total time:              {avg_total:.3f} ms")
 
         if runs > 1:
             std_query = statistics.stdev(times_query)
+            std_server = statistics.stdev(times_server)
             std_recon = statistics.stdev(times_recon)
         else:
             std_query = 0
+            std_server = 0
             std_recon = 0
 
-        print(f"\nStandard Deviation (Query creation): {std_query:.3f} ms")
-        print(f"Standard Deviation (Reconstruction): {std_recon:.3f} ms")
+        print(f"\nStandard Deviation (Query creation):     {std_query:.3f} ms")
+        print(f"Standard Deviation (Server computation): {std_server:.3f} ms")
+        print(f"Standard Deviation (Reconstruction):     {std_recon:.3f} ms")
         print(f"Bandwidth sent to servers: {bandwidth_kb:.2f} KB")
         print(f"{'=' * 51}")
 
