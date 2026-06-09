@@ -46,8 +46,12 @@ def main(argv=None):
     print(f"Query creation time: {Query_creation_time} ms")
 
     # servers compute responses in parallel
+    start_server = time.time()
     with Pool(args.SERVERS) as pool:
         responses = pool.map(server_compute, [(queries[s], db) for s in range(0,args.SERVERS)])
+    end_server = time.time()
+    Server_computation_time = round((end_server - start_server) * 1000, 3)
+    print(f"Server computation time: {Server_computation_time} ms")
 
     # choose any t+1 server responses for reconstruction (here: first t+1)
     used_x = []
@@ -68,7 +72,7 @@ def main(argv=None):
     print("Database value:", db[args.k])
     print("Reconstructed :", result,"\n")
         
-    return Query_creation_time, Reconstruction_time, queries
+    return Query_creation_time, Server_computation_time, Reconstruction_time, queries
 
 # run
 if __name__ == "__main__":
