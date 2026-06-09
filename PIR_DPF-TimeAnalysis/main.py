@@ -67,7 +67,7 @@ def main(argv=None):
     # ==================== TIMING SUMMARY ====================
 
     print(f"\nTiming Summary (ms)")
-    print(f"DPF Key Generation:    {Query_generation_time} ms")
+    print(f"Query Creation:        {Query_generation_time} ms")
     print(f"Server Computation:    {Server_computation_time} ms")
     print(f"Reconstruction:        {Reconstruction_time} ms")
     total_time = Query_generation_time + Server_computation_time + Reconstruction_time
