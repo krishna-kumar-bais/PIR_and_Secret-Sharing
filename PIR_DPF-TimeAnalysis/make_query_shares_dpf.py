@@ -1,7 +1,4 @@
-import sys
-sys.path.insert(0, '/Users/krishna/Desktop/PIR_DPF')
-
-from PIR_DPF.GenerateDPF import GenerateDPF
+from GenerateDPF import GenerateDPF
 
 MOD = 2**61 - 1
 
