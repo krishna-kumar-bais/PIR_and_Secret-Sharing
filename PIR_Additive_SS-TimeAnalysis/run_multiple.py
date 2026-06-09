@@ -1,6 +1,6 @@
 import argparse
 import sys
-from main import main   # import main() from main.py
+from main import main  
 
 def run_multiple():
     parser = argparse.ArgumentParser()
@@ -12,21 +12,24 @@ def run_multiple():
     args = parser.parse_args()
 
     for size in args.DB_SIZES:
-        q_times, r_times = [], []
+        q_times, s_times, r_times = [], [], []
         print(f"\n=== Running for DB_SIZE={size} ===")
         for _ in range(args.runs):
-            q_time, r_time, queries = main([
+            q_time, s_time, r_time, queries = main([
                 "--DB_SIZE", str(size),
                 "--SERVERS", str(args.SERVERS),
                 "--k", str(args.k),
                 "--DB_FILE", args.DB_FILE
             ])
             q_times.append(q_time)
+            s_times.append(s_time)
             r_times.append(r_time)
 
         avg_q = sum(q_times) / len(q_times)
+        avg_s = sum(s_times) / len(s_times)
         avg_r = sum(r_times) / len(r_times)
         print(f"\nAverage Query creation time: {avg_q:.3f} ms")
+        print(f"Average Server computation time: {avg_s:.3f} ms")
         print(f"Average Reconstruction time: {avg_r:.3f} ms")
 
         # bandwidth (same across runs → just use first queries)
@@ -34,8 +37,10 @@ def run_multiple():
 
         # --- standard deviations ---
         std_q = (sum((x - avg_q) ** 2 for x in q_times) / len(q_times)) ** 0.5
+        std_s = (sum((x - avg_s) ** 2 for x in s_times) / len(s_times)) ** 0.5
         std_r = (sum((x - avg_r) ** 2 for x in r_times) / len(r_times)) ** 0.5
         print(f"\nStandard Deviation (Query creation): {std_q:.3f} ms")
+        print(f"Standard Deviation (Server computation): {std_s:.3f} ms")
         print(f"Standard Deviation (Reconstruction): {std_r:.3f} ms")
         print(f"Bandwidth sent to servers: {bandwidth_bytes/1024:.2f} KB\n")
 
