@@ -1,8 +1,4 @@
-
-import sys
-sys.path.insert(0, '/Users/krishna/Desktop/PIR_DPF')
-
-from PIR_DPF.EvalDPF import EvaluateDPF
+from EvalDPF import EvaluateDPF
 
 MOD = 2**61 - 1
 
