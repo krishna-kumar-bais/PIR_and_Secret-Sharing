@@ -69,7 +69,7 @@ class QueryTimings:
 
 def print_timing_summary(timings: QueryTimings) -> None:
     print(f"\nTiming Summary (ms)")
-    print(f"DPF Key Generation:    {timings.query_gen_ms()} ms")
+    print(f"Query Creation:        {timings.query_gen_ms()} ms")
     print(f"Server Computation:    {timings.server_ms()} ms")
     print(f"Reconstruction:        {timings.recon_ms()} ms")
     print(f"Total Time:            {timings.total_ms()} ms")
