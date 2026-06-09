@@ -1,5 +1,5 @@
 # DPF/EvalDPF.py
-from PIR_DPF.GenerateDPF import DPFKey, prg
+from GenerateDPF import DPFKey, prg
 import hashlib
 
 def convert(seed: bytes, prime: int) -> int:
