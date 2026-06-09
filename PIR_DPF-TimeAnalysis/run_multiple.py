@@ -1,7 +1,3 @@
-import sys
-sys.path.insert(0, '/Users/krishna/Desktop/PIR_DPF')
-sys.path.insert(0, '/Users/krishna/Desktop/PIR_DPF/PIR_DPF')
-
 import argparse
 import numpy as np
 import random
@@ -32,7 +28,7 @@ def run_multiple(DB_SIZES, k=0, DB_FILE="database_dpf.npy", runs=1):
                 '--DB_FILE', DB_FILE
             ])
             
-            times_query.append(result['query_gen_time'] + result['server_time'])  # Total query/computation time
+            times_query.append(result['query_gen_time'])
             times_server.append(result['server_time'])
             times_recon.append(result['recon_time'])
             
@@ -62,19 +58,29 @@ def run_multiple(DB_SIZES, k=0, DB_FILE="database_dpf.npy", runs=1):
             # 'all_correct': all_correct,
         }
         
+        avg_query = statistics.mean(times_query)
+        avg_server = statistics.mean(times_server)
+        avg_recon = statistics.mean(times_recon)
+        avg_total = avg_query + avg_server + avg_recon
+
         # Print statistics for this DB_SIZE
-        print(f"\nAverage Query creation time: {statistics.mean(times_query):.3f} ms")
-        print(f"Average Reconstruction time: {statistics.mean(times_recon):.3f} ms")
-        
+        print(f"\nAverage Query creation time:   {avg_query:.3f} ms")
+        print(f"Average Server computation time: {avg_server:.3f} ms")
+        print(f"Average Reconstruction time:     {avg_recon:.3f} ms")
+        print(f"Average Total time:              {avg_total:.3f} ms")
+
         if runs > 1:
             std_query = statistics.stdev(times_query)
+            std_server = statistics.stdev(times_server)
             std_recon = statistics.stdev(times_recon)
         else:
             std_query = 0
+            std_server = 0
             std_recon = 0
-        
-        print(f"\nStandard Deviation (Query creation): {std_query:.3f} ms")
-        print(f"Standard Deviation (Reconstruction): {std_recon:.3f} ms")
+
+        print(f"\nStandard Deviation (Query creation):   {std_query:.3f} ms")
+        print(f"Standard Deviation (Server computation): {std_server:.3f} ms")
+        print(f"Standard Deviation (Reconstruction):     {std_recon:.3f} ms")
         # Bandwidth: DPF key size (typically 32 bytes per key) * 2 servers, converted to KB
         dpf_key_size_bytes = 64 * 2  # 2 keys, 32 bytes each
         bandwidth_kb = (dpf_key_size_bytes * db_size) / 1024
